@@ -4,22 +4,46 @@ CREATE OR REPLACE PACKAGE pkg_user_mgmt
 Created By: Nayeem Syed
 Created Date: 09/19/2010
 Description: Schema Creation Pacakege. This will standardise the proces of Schema creation accross all the database enviornments.
+Modifiaction History:
+      Modified By: Nayeem Syed
+      Modified Date: 09/10/2019
+      Description: Added User Creation Feature
 ****************************************************/
 AS
 PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2, p_temp_tablespace VARCHAR2);
+PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2, p_resource2 VARCHAR2,  p_resource3 VARCHAR2);
 END;
 /
 
 CREATE OR REPLACE PACKAGE BODY pkg_user_mgmt 
 IS 
+
+/*Create Schema*/
+
 PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2, p_temp_tablespace VARCHAR2)
 IS 
 v_stmt varchar2(2000);
 BEGIN 
 v_stmt := 'CREATE '||p_schema_name|| ' identified by ' || p_password || ';';
 EXECUTE IMMEDIATE v_stmt;
-DBMS_OUTPUT.PUT_LINE(v_stmt|| ' - CREATED SUCCESSFULLY');
-NULL;
-END schema_create;
+DBMS_OUTPUT.PUT_LINE(v_stmt|| ' - Schema CREATED SUCCESSFULLY');
+END schema_create;  -- End Schema Create Procedure
+
+
+/* Create User */
+
+PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2, p_resource2 VARCHAR2,  p_resource3 VARCHAR2)
+IS
+v_stmt varchar2(2000);
+BEGIN
+v_stmt := 'CREATE USER '||p_username|| ' identified by ' || p_password || ';';
+EXECUTE IMMEDIATE v_stmt;
+DBMS_OUTPUT.PUT_LINE(v_stmt|| ' - User CREATED SUCCESSFULLY');
+END user_create; -- End User Create Procedure
+
 END pkg_user_mgmt;
 /
+
+
+
+
