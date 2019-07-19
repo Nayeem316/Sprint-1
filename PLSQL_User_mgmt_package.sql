@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE PACKAGE pkg_user_mgmt
 /***************************************************
 Created By: Nayeem Syed
@@ -12,6 +11,7 @@ Modifiaction History:
 AS
 PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2, p_temp_tablespace VARCHAR2);
 PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2, p_resource2 VARCHAR2,  p_resource3 VARCHAR2);
+PROCEDURE lock_user(p_username VARCHAR2);
 END;
 /
 
@@ -41,9 +41,16 @@ EXECUTE IMMEDIATE v_stmt;
 DBMS_OUTPUT.PUT_LINE(v_stmt|| ' - User CREATED SUCCESSFULLY');
 END user_create; -- End User Create Procedure
 
+/* Lock User */
+
+PROCEDURE lock_user(p_username VARCHAR2)
+IS
+v_stmt varchar2(2000);
+BEGIN
+v_stmt := 'ALTER USER '||p_username|| ' ACCOUNT LOCK;';
+EXECUTE IMMEDIATE v_stmt;
+DBMS_OUTPUT.PUT_LINE(v_stmt|| ' - User CREATED SUCCESSFULLY');
+END lock_user;
+
 END pkg_user_mgmt;
 /
-
-
-
-
