@@ -1,0 +1,14 @@
+List of Data Dictionary Tables:
+------------------------------
+
+DBA_TABLES;
+DBA_CONSTRAINTS;
+DBA_TAB_COLUMNS;
+DBA_PARTITIONS;
+DBA_OBJECTS;
+
+
+Dynamic Views:
+
+V$SESSION;
+V%LOCKS
