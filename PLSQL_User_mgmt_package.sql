@@ -9,8 +9,8 @@ Modifiaction History:
       Description: Added User Creation Feature
 ****************************************************/
 AS
-PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2, p_temp_tablespace VARCHAR2);
-PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2, p_resource2 VARCHAR2,  p_resource3 VARCHAR2);
+PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2 DEFAULT 'USERS', p_temp_tablespace VARCHAR2 DEFAULT 'TEMP');
+PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2 DEFAULT NULL, p_resource2 VARCHAR2 DEFAULT NULL,  p_resource3 VARCHAR2 DEFAULT NULL);
 PROCEDURE lock_user(p_username VARCHAR2);
 END;
 /
@@ -20,7 +20,7 @@ IS
 
 /*Create Schema*/
 
-PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2, p_temp_tablespace VARCHAR2)
+PROCEDURE schema_create(p_schema_name VARCHAR2, p_password VARCHAR2, p_default_tablespace VARCHAR2 DEFAULT 'USERS', p_temp_tablespace VARCHAR2 DEFAULT 'TEMP')
 IS 
 v_stmt varchar2(2000);
 BEGIN 
@@ -32,7 +32,7 @@ END schema_create;  -- End Schema Create Procedure
 
 /* Create User */
 
-PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2, p_resource2 VARCHAR2,  p_resource3 VARCHAR2)
+PROCEDURE user_create(p_username VARCHAR2, p_password VARCHAR2, p_resource1 VARCHAR2 DEFAULT NULL, p_resource2 VARCHAR2 DEFAULT NULL,  p_resource3 VARCHAR2 DEFAULT NULL)
 IS
 v_stmt varchar2(2000);
 BEGIN
