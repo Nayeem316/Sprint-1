@@ -1,0 +1,36 @@
+Find blocking sessions
+Blocking sessions occur when one sessions holds an exclusive lock on an object and doesn't release it before another sessions wants to update the same data. This will block the second until the first one has done its work.
+From the view of the user it will look like the application completely hangs while waiting for the first session to release its lock. You'll often have to identify these sessions in order to improve your application to avoid as many blocking sessions as possible.
+Recipe #1 - find blocking sessions with v$session
+SQL> SELECT s.blocking_session, s.sid, s.serial#, s.seconds_in_wait
+          FROM v$session s 
+        WHERE blocking_session IS NOT NULL
+
+Recipe #2 - find blocking sessions using v$lock
+SQL> SELECT l1.sid || ' is blocking ' || l2.sid blocking_sessions 
+          FROM v$lock l1, v$lock l2 
+        WHERE l1.block = 1 
+             AND l2.request > 0 
+            AND l1.id1 = l2.id1 AND l1.id2 = l2.id2
+
+Recipe #3 - blocking sessions with all available information
+The next query prints a few more information, it let's you quickly see who's blocking who. Run this query and you can immediately call the colleague who's locking your table:
+
+SQL> SELECT s1.username || '@' || s1.machine || ' ( SID=' || s1.sid || ' ) is blocking ' || s2.username || '@' ||      s2.machine || ' ( SID=' || s2.sid || ' ) ' AS blocking_status 
+           FROM v$lock l1, v$session s1, v$lock l2, v$session s2 
+         WHERE s1.sid=l1.sid 
+              AND s2.sid=l2.sid 
+              AND l1.BLOCK=1 
+                AND l2.request > 0 
+              AND l1.id1 = l2.id1 
+              AND l1.id2 = l2.id2;
+
+Types of Locks:
+	1. Row Level Locks
+	2. Table Level Locks
+	3. Exclusive Locks : Only one user/connection are allow to change the data.
+	
+	
+	
+
+
