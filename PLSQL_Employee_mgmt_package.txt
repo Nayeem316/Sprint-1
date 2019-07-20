@@ -1,0 +1,44 @@
+CREATE OR REPLACE PACKAGE emp_mgmt 
+/***************************************************
+Created By: Nayeem Syed
+Created Date: 09/19/2010
+Description: Employee Managment. This will standardise the proces of Schema creation accross all the database enviornments.
+Modification History:
+      Modified By: Nayeem Syed
+      Modified Date: 09/10/2019
+      Modification Description: 
+****************************************************/
+IS
+PROCEDURE fire_employee(p_empno emp.empno%TYPE);
+PROCEDURE raise_salary(p_deptno emp.deptno%TYPE, p_pct NUMBER);
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY emp_mgmt 
+IS
+
+/* Fire Employee */
+
+PROCEDURE fire_employee(p_empno emp.empno%TYPE)
+IS
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Deleting the employee '||p_empno);
+END fire_employee;
+
+/* Rasie Salary */
+
+PROCEDURE raise_salary(p_deptno emp.deptno%TYPE, p_pct NUMBER)
+IS
+v_dname dept.dname%TYPE;
+BEGIN 
+SELECT dname INTO v_dname FROM dept WHERE deptno=p_deptno;
+DBMS_OUTPUT.PUT_LINE('Raise the Salary for '||v_dname||' Department by '||p_pct||'%');
+END raise_salary;
+END emp_mgmt;
+
+/
+
+
+exec emp_mgmt.fire_employee(7839);
+
+exec emp_mgmt.raise_salary(10,15);
